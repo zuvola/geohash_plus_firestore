@@ -33,6 +33,7 @@ class GeohashQuery {
     required String field,
     List<String> exclude = const [],
     QueryType type = QueryType.array,
+    bool clip = true,
     GetOptions? options,
     GeohashCoverOptions coverOptions = const GeohashCoverOptions(),
   }) async {
@@ -61,10 +62,12 @@ class GeohashQuery {
       final snapshots = await Future.wait(queries);
       docs = snapshots.expand((e) => e.docs).toList();
     }
-    docs = docs.where((doc) {
-      final point = doc.get('$field.point') as GeoPoint;
-      return bounds.contains(LatLng(point.latitude, point.longitude));
-    }).toList();
+    if (clip) {
+      docs = docs.where((doc) {
+        final point = doc.get('$field.point') as GeoPoint;
+        return bounds.contains(LatLng(point.latitude, point.longitude));
+      }).toList();
+    }
     return GeohashQueryResult(
       UnmodifiableListView(docs),
       UnmodifiableListView(hashes),
