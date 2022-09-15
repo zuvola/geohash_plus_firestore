@@ -46,6 +46,12 @@ class GeohashQuery {
     ).entries.lastWhere((item) => item.value.length < 10);
     final hashes = cover.value.map((e) => e.hash).toList();
     hashes.removeWhere((item) => exclude.contains(item));
+    if (hashes.isEmpty) {
+      return GeohashQueryResult(
+        UnmodifiableListView([]),
+        UnmodifiableListView([]),
+      );
+    }
 
     List<QueryDocumentSnapshot<T>> docs;
     if (type == QueryType.array) {
