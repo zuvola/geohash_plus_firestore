@@ -11,7 +11,7 @@ dependencies:
   cloud_firestore: ^3.4.7
   flutter:
     sdk: flutter
-  geohash_plus: ^1.1.0
+  geohash_plus: ^1.1.1
 
 dev_dependencies:
   flutter_test:
